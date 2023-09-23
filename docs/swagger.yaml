@@ -1,0 +1,97 @@
+basePath: /
+definitions:
+  usecase.OrderInputDTO:
+    properties:
+      id:
+        type: string
+      price:
+        type: number
+      tax:
+        type: number
+    type: object
+  usecase.OrderListInputDTO:
+    properties:
+      offset:
+        type: integer
+      page:
+        type: integer
+      sort:
+        type: string
+    type: object
+  web.Error:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: guilherme.gomes@gmail.com
+    name: Guilherme Gomes
+    url: http://github.com/gbgomes
+  description: Clean Architeture API Documentation
+  license:
+    name: Free License
+    url: http://github.com/gbgomes
+  termsOfService: http://swagger.io/terms/
+  title: Clean Architeture project API Documentation
+  version: "1.0"
+paths:
+  /order:
+    get:
+      consumes:
+      - application/json
+      description: get all orders
+      parameters:
+      - description: page number
+        in: query
+        name: page
+        type: string
+      - description: number of rows per page
+        in: query
+        name: rows
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/usecase.OrderListInputDTO'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: List orders
+      tags:
+      - orders
+    post:
+      consumes:
+      - application/json
+      description: Create order
+      parameters:
+      - description: order request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/usecase.OrderInputDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: Create order
+      tags:
+      - orders
+swagger: "2.0"
